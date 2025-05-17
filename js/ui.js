@@ -7,18 +7,19 @@ function updateUI() {
   document.getElementById("provinces").textContent = game.provinces;
 }
 
-const manpowerElement = document.getElementById("manpower");
-  manpowerElement.textContent = Math.floor(game.manpower);
-  
-  // Show +1 effect when manpower increases
-  if (Math.floor(game.manpower) > Math.floor(lastManpower)) {
-    const popup = document.createElement("div");
-    popup.textContent = "+1";
-    popup.className = "manpower-popup";
-    manpowerElement.appendChild(popup);
-    setTimeout(() => popup.remove(), 1000);
-  }
-  lastManpower = game.manpower;
+// In updateUI():
+const currentManpower = Math.floor(game.manpower);
+  document.getElementById("manpower").textContent = currentManpower;
+
+// +1 Popup Effect
+if (Math.floor(game.manpower) > Math.floor(lastManpower)) {
+  const popup = document.createElement("div");
+  popup.textContent = "+1";
+  popup.className = "manpower-popup";
+  document.querySelector(".manpower-container").appendChild(popup);
+  setTimeout(() => popup.remove(), 1000);
+}
+lastManpower = game.manpower;
 
 
 // Initialize buttons

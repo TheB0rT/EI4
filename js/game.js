@@ -2,7 +2,7 @@ const game = {
   gold: 10,
   goldPerSecond: 0.5,
   manpower: 1000,
-  manpowerPerSecond: 1,
+  manpowerPerSecond: 0.3,
   provinces: 1,
   lastUpdate: Date.now()
 };
@@ -13,7 +13,8 @@ function gameLoop() {
   game.lastUpdate = now;
   
   game.gold += game.goldPerSecond * deltaTime;
-  game.manpower += game.manpowerPerSecond * deltaTime;
+  const manpowerIncrease = game.manpowerPerSecond * deltaTime;
+game.manpower += manpowerIncrease;
   updateUI(); // Now works!
   requestAnimationFrame(gameLoop);
 }

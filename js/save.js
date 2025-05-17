@@ -28,7 +28,7 @@ document.getElementById("reset").addEventListener("click", () => {
       gold: 10,
       goldPerSecond: 0.5,
       manpower: 1000,
-      manpowerPerSecond: 1,
+      manpowerPerSecond: 0.3,
       provinces: 1,
       lastUpdate: Date.now()
     });
