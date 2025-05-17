@@ -1,18 +1,16 @@
-// Save System with Safe Initialization
+// save.js - Save System
 function initializeSaveSystem() {
-    // 1. Wait for game API to be available
-    if (!window.gameAPI) {
+    if (!window.gameAPI?.state) {
         setTimeout(initializeSaveSystem, 100);
         return;
     }
 
     const game = window.gameAPI.state;
 
-    // 2. Load Function
     function loadGame() {
-        const saved = localStorage.getItem("europaIncrementalis");
-        if (saved) {
-            try {
+        try {
+            const saved = localStorage.getItem("europaIncrementalis");
+            if (saved) {
                 const parsed = JSON.parse(saved);
                 Object.assign(game, {
                     gold: parsed.gold || 10,
@@ -23,13 +21,13 @@ function initializeSaveSystem() {
                     lastUpdate: Date.now()
                 });
                 console.log("Loaded saved game");
-            } catch (e) {
-                console.error("Failed to load save:", e);
             }
+        } catch (e) {
+            console.error("Failed to load save:", e);
+            localStorage.removeItem("europaIncrementalis");
         }
     }
 
-    // 3. Save Function
     function saveGame() {
         const saveData = {
             version: 2,
@@ -43,10 +41,10 @@ function initializeSaveSystem() {
         localStorage.setItem("europaIncrementalis", JSON.stringify(saveData));
     }
 
-    // 4. Set up auto-save
-    const saveInterval = setInterval(saveGame, 30000);
+    // Set up auto-save
+    setInterval(saveGame, 30000);
 
-    // 5. Reset Functionality
+    // Reset functionality
     document.getElementById("reset").addEventListener("click", () => {
         if (confirm("Reset all progress?")) {
             localStorage.removeItem("europaIncrementalis");
@@ -58,7 +56,9 @@ function initializeSaveSystem() {
                 provinces: 1,
                 lastUpdate: Date.now()
             });
-            console.log("Game reset");
+            if (typeof game.updateUI === 'function') {
+                game.updateUI();
+            }
         }
     });
 
@@ -67,5 +67,5 @@ function initializeSaveSystem() {
     console.log("Save system initialized");
 }
 
-// Start the initialization check
+// Start initialization
 initializeSaveSystem();

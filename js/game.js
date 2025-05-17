@@ -1,28 +1,41 @@
-// game.js - Core Game Engine
-window.gameAPI = {
-    state: {
+// game.js - Fixed Version
+window.gameAPI = (function() {
+    const state = {
         gold: 10,
         goldPerSecond: 0.5,
         manpower: 1000,
-        manpowerPerSecond: 0.3,
+        manpowerPerSecond: 0.5,
         provinces: 1,
-        lastUpdate: Date.now()
-    },
-    init: function() {
-        // Game loop
-        const gameLoop = () => {
-            const now = Date.now();
-            const deltaTime = (now - this.state.lastUpdate) / 1000;
-            this.state.lastUpdate = now;
-            
-            this.state.gold += this.state.goldPerSecond * deltaTime;
-            this.state.manpower += this.state.manpowerPerSecond * deltaTime;
-            
-            if (typeof this.state.updateUI === 'function') {
-                this.state.updateUI();
-            }
-            requestAnimationFrame(gameLoop.bind(this));
-        };
-        gameLoop();
+        lastUpdate: Date.now(),
+        updateUI: null
+    };
+
+    function gameLoop() {
+        const now = Date.now();
+        const deltaTime = (now - state.lastUpdate) / 1000;
+        state.lastUpdate = now;
+        
+        // Increment resources
+        state.gold += state.goldPerSecond * deltaTime;
+        state.manpower += state.manpowerPerSecond * deltaTime;
+        
+        // Update UI if callback exists
+        if (typeof state.updateUI === 'function') {
+            state.updateUI();
+        }
+        
+        requestAnimationFrame(gameLoop);
     }
-};
+
+    // Start the game loop immediately
+    gameLoop();
+
+    return {
+        state: state,
+        init: function(uiCallbacks) {
+            if (uiCallbacks.updateUI) {
+                state.updateUI = uiCallbacks.updateUI;
+            }
+        }
+    };
+})();
