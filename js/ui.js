@@ -12,6 +12,13 @@ document.addEventListener("DOMContentLoaded", function() {
         const game = window.gameAPI.state;
         let lastManpower = game.manpower;
 
+        function updateTaxButton() {
+            const goldGain = 1 * game.provinces;
+            const taxBtn = document.getElementById("tax");
+            taxBtn.textContent = `Tax Province (+${goldGain} Gold)`;
+            taxBtn.title = `Collect taxes from all provinces (Gains ${goldGain} Gold)`;
+        }
+
         // Register UI update callback
         game.updateUI = function() {
             document.getElementById("gold").textContent = Math.floor(game.gold);
@@ -31,19 +38,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.querySelector(".manpower-popups").appendChild(popup);
             }
             lastManpower = game.manpower;
+            
+            // Update tax button whenever UI updates
+            updateTaxButton();
         };
 
-          // Button handlers
-            document.getElementById("tax").addEventListener("click", () => {
-                const goldGain = 1 * game.provinces; // Linear scaling
-                game.gold += goldGain;
-
-          // Optional visual feedback
-                const taxBtn = document.getElementById("tax");
-                taxBtn.textContent = `Tax Province (+${goldGain} Gold)`;
-
-        
-});
+        // Button handlers
+        document.getElementById("tax").addEventListener("click", () => {
+            const goldGain = 1 * game.provinces;
+            game.gold += goldGain;
+            game.updateUI();
+        });
 
         document.getElementById("conquer").addEventListener("click", () => {
             if (game.gold >= 50 && game.manpower >= 200) {
@@ -57,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         // Initial UI update
+        updateTaxButton();
         game.updateUI();
         console.log("UI initialized");
     }
