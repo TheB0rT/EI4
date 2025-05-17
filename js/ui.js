@@ -33,11 +33,17 @@ document.addEventListener("DOMContentLoaded", function() {
             lastManpower = game.manpower;
         };
 
-        // Button handlers
-        document.getElementById("tax").addEventListener("click", () => {
-            game.gold += 1;
-            game.updateUI();
-        });
+          // Button handlers
+            document.getElementById("tax").addEventListener("click", () => {
+                const goldGain = 1 * game.provinces; // Linear scaling
+                game.gold += goldGain;
+
+          // Optional visual feedback
+                const taxBtn = document.getElementById("tax");
+                taxBtn.textContent = `Tax Province (+${goldGain} Gold)`;
+
+        
+});
 
         document.getElementById("conquer").addEventListener("click", () => {
             if (game.gold >= 50 && game.manpower >= 200) {
@@ -45,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 game.manpower -= 200;
                 game.provinces++;
                 game.goldPerSecond += 0.5;
+                game.manpowerPerSecond += 0.5;
                 game.updateUI();
             }
         });

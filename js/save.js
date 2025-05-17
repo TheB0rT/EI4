@@ -17,7 +17,7 @@ function initializeSaveSystem() {
                     manpower: parsed.manpower || 1000,
                     provinces: parsed.provinces || 1,
                     goldPerSecond: parsed.goldPerSecond || 0.5,
-                    manpowerPerSecond: parsed.manpowerPerSecond || 0.3,
+                    manpowerPerSecond: parsed.manpowerPerSecond || 0.5,
                     lastUpdate: Date.now()
                 });
                 console.log("Loaded saved game");
@@ -52,7 +52,7 @@ function initializeSaveSystem() {
                 gold: 10,
                 goldPerSecond: 0.5,
                 manpower: 1000,
-                manpowerPerSecond: 0.3,
+                manpowerPerSecond: 0.5,
                 provinces: 1,
                 lastUpdate: Date.now()
             });
