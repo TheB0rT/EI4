@@ -1,47 +1,77 @@
+// UI State
 let lastManpower = game.manpower;
 
+// Main UI Update Function
 function updateUI() {
-  // Update all displays
-  document.getElementById("gold").textContent = Math.floor(game.gold);
-  document.getElementById("manpower").textContent = Math.floor(game.manpower);
-  document.getElementById("provinces").textContent = game.provinces;
-  
-   // Update tooltips
-  document.getElementById("gold-box").title = `Gold per second: ${game.goldPerSecond.toFixed(1)}`;
-  document.getElementById("manpower-box").title = `Manpower per second: ${game.manpowerPerSecond.toFixed(1)}`;
- 
-  // Manpower display with popup logic
-  const currentManpower = Math.floor(game.manpower);
-  document.getElementById("manpower").textContent = currentManpower;
+    // Update resource displays
+    document.getElementById("gold").textContent = Math.floor(game.gold);
+    document.getElementById("manpower").textContent = Math.floor(game.manpower);
+    document.getElementById("provinces").textContent = game.provinces;
 
-  // Popup effect
-  const currentManpower = Math.floor(game.manpower);
-  if (currentManpower > Math.floor(lastManpower)) {
-    const popup = document.createElement("div");
-    popup.textContent = `+${currentManpower - Math.floor(lastManpower)}`;
-    popup.className = "manpower-popup";
-    document.querySelector(".manpower-popups").innerHTML = '';
-    document.querySelector(".manpower-popups").appendChild(popup);
-  }
-  lastManpower = game.manpower;
+    // Update tooltips with current rates
+    updateTooltips();
+
+    // Handle manpower popups
+    handleManpowerPopups();
 }
 
+// Update Tooltips with Current Rates
+function updateTooltips() {
+    document.getElementById("gold-box").title = `Gold per second: ${game.goldPerSecond.toFixed(1)}`;
+    document.getElementById("manpower-box").title = `Manpower per second: ${game.manpowerPerSecond.toFixed(1)}`;
+}
 
-// Initialize buttons
-document.getElementById("tax").addEventListener("click", () => {
-  game.gold += 1;
-  updateUI();
-});
+// Handle Manpower Popup Effects
+function handleManpowerPopups() {
+    const currentManpower = Math.floor(game.manpower);
+    const popupContainer = document.querySelector(".manpower-popups");
+    
+    if (currentManpower > Math.floor(lastManpower)) {
+        const increaseAmount = currentManpower - Math.floor(lastManpower);
+        const popup = createPopupElement(increaseAmount);
+        
+        // Clear previous popups and add new one
+        popupContainer.innerHTML = '';
+        popupContainer.appendChild(popup);
+    }
+    lastManpower = game.manpower;
+}
 
-document.getElementById("conquer").addEventListener("click", () => {
-  if (game.gold >= 50) {
-    game.gold -= 50;
-    game.provinces++;
-    game.goldPerSecond += 0.5;
+// Create Popup Element
+function createPopupElement(amount) {
+    const popup = document.createElement("div");
+    popup.className = "manpower-popup";
+    popup.textContent = `+${amount}`;
+    return popup;
+}
+
+// Button Event Listeners
+function initializeButtons() {
+    // Tax Province Button
+    document.getElementById("tax").addEventListener("click", () => {
+        game.gold += 1;
+        updateUI();
+    });
+
+    // Conquer Province Button
+    document.getElementById("conquer").addEventListener("click", () => {
+        if (game.gold >= 50) {
+            game.gold -= 50;
+            game.provinces++;
+            game.goldPerSecond += 0.5;
+            updateUI();
+        }
+    });
+
+    // Reset Button (handled in save.js)
+}
+
+// Initialize UI
+function initializeUI() {
     updateUI();
-  }
-});
+    initializeButtons();
+    console.log("UI initialized successfully");
+}
 
-
-// Confirm UI loaded
-console.log("UI initialized");
+// Start the UI
+initializeUI();
