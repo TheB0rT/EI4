@@ -1,4 +1,4 @@
-const game = {
+window.game = {
   gold: 10,
   goldPerSecond: 0.5,
   manpower: 1000,

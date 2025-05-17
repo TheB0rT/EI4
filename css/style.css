@@ -71,8 +71,8 @@ body {
 /* Manpower Popups */
 .manpower-popups {
   position: absolute;
-  top: -20px;
-  right: 10px;
+  top: 10px;
+  right: 60px;
   pointer-events: none;
   height: 20px;
   overflow: visible;
