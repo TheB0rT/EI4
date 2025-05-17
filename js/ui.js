@@ -1,4 +1,12 @@
 let lastManpower = 0;
+
+function updateUI() {
+  document.getElementById("gold").textContent = game.gold.toFixed(1);
+  document.getElementById("gps").textContent = game.goldPerSecond.toFixed(1);
+  document.getElementById("manpower").textContent = game.manpower.toFixed(0);
+  document.getElementById("provinces").textContent = game.provinces;
+}
+
 const manpowerElement = document.getElementById("manpower");
   manpowerElement.textContent = Math.floor(game.manpower);
   
@@ -11,13 +19,7 @@ const manpowerElement = document.getElementById("manpower");
     setTimeout(() => popup.remove(), 1000);
   }
   lastManpower = game.manpower;
-}
-function updateUI() {
-  document.getElementById("gold").textContent = game.gold.toFixed(1);
-  document.getElementById("gps").textContent = game.goldPerSecond.toFixed(1);
-  document.getElementById("manpower").textContent = game.manpower.toFixed(0);
-  document.getElementById("provinces").textContent = game.provinces;
-}
+
 
 // Initialize buttons
 document.getElementById("tax").addEventListener("click", () => {
