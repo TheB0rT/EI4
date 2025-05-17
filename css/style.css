@@ -34,6 +34,49 @@ button:disabled {
   cursor: not-allowed;
 }
 
+#resources {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.resource-box {
+  flex: 1;
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  position: relative;
+  min-width: 80px;
+}
+
+.resource-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.resource-value {
+  font-size: 1.2em;
+}
+
+/* Tooltip styles */
+.resource-box:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  white-space: nowrap;
+  margin-bottom: 5px;
+}
+
 .manpower-container {
   position: relative;
   display: inline-block;
