@@ -1,26 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Europa Incrementalis</title>
-    <link rel="stylesheet" href="css/style.css">
+  <title>Europa Incrementalis 4</title>
+  <style>
+    body { 
+      font-family: sans-serif; 
+      max-width: 600px; 
+      margin: 0 auto; 
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    button {
+      padding: 8px 16px;
+      margin: 5px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #game {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
-    <div id="game-container">
-        <div id="resources">
-            <div>Gold: <span id="gold">0</span></div>
-            <div>Manpower: <span id="manpower">100</span></div>
-            <div>Monarch Points: <span id="monarch-points">0</span></div>
-		<div>Gold per Second: <span id="gps">0.5</span></div>
-        </div>
-        <div id="provinces">
-            <button id="conquer-province">Conquer Province (50 Gold)</button>
-            <div>Provinces: <span id="province-count">1</span></div>
-        </div>
-    </div>
-    <script src="js/game.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/save.js"></script>
+  <div id="game">
+    <h1>Europa Incrementalis 4</h1>
+    <div>Gold: <span id="gold">10</span></div>
+    <div>Gold/sec: <span id="gps">0.5</span></div>
+    <div>Provinces: <span id="provinces">1</span></div>
+    <button id="tax">Tax Province (+1 Gold)</button>
+    <button id="conquer">Conquer Province (50 Gold)</button>
+  </div>
+
+  <!-- Load scripts -->
+   <script src="/js/ui.js"></script>
+   <script src="/js/game.js"></script>
+   <script src="/js/save.js"></script>
 </body>
 </html>

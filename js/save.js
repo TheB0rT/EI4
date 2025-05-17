@@ -1,26 +1,19 @@
-function saveGame() {
-    if (!game) return;
-    localStorage.setItem("europaIncrementalisSave", JSON.stringify(game));
+// Load game state
+function loadGame() {
+  const saved = localStorage.getItem("europaIncrementalis");
+  if (saved) {
+    Object.assign(game, JSON.parse(saved));
+    game.lastUpdate = Date.now(); // Prevent time exploits
+  }
 }
 
-function loadGame() {
-    const save = localStorage.getItem("europaIncrementalisSave");
-    if (save) {
-        try {
-            const parsed = JSON.parse(save);
-            // Validate loaded game
-            if (typeof parsed.gold === 'number' && typeof parsed.goldPerSecond === 'number') {
-                game = parsed;
-                game.lastUpdate = Date.now(); // Prevent time exploit
-                updateUI();
-                return true;
-            }
-        } catch (e) {
-            console.error("Failed to load save", e);
-        }
-    }
-    return false;
+// Save game state
+function saveGame() {
+  localStorage.setItem("europaIncrementalis", JSON.stringify(game));
 }
 
 // Auto-save every 30 seconds
 setInterval(saveGame, 30000);
+
+// Load on startup
+loadGame();

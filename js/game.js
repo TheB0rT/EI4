@@ -1,41 +1,29 @@
-// Default game state
-const DEFAULT_GAME_STATE = {
-    gold: 10,
-    manpower: 100,
-    monarchPoints: 0,
-    provinces: 1,
-    goldPerSecond: 0.5,
-    lastUpdate: Date.now()
+// Core game state
+const game = {
+  gold: 10,
+  goldPerSecond: 0.5,
+  provinces: 1,
+  lastUpdate: Date.now()
 };
 
-// Current game state (initially null)
-let game = null;
-
-// Initialize a new game
-function newGame() {
-    game = JSON.parse(JSON.stringify(DEFAULT_GAME_STATE)); // Deep copy
-    updateUI();
-}
-
 // Main game loop
+let lastUIUpdate = 0;
+
 function gameLoop() {
-    if (!game) return;
-    
-    const now = Date.now();
-    const deltaTime = (now - game.lastUpdate) / 1000;
-    game.lastUpdate = now;
+  const now = Date.now();
+  const deltaTime = (now - game.lastUpdate) / 1000;
+  game.lastUpdate = now;
+  
+  game.gold += game.goldPerSecond * deltaTime;
 
-    game.gold += game.goldPerSecond * deltaTime;
+  // Update UI max 10 times/sec (smoother but efficient)
+  if (now - lastUIUpdate > 100) {
     updateUI();
-    requestAnimationFrame(gameLoop);
+    lastUIUpdate = now;
+  }
+  
+  requestAnimationFrame(gameLoop);
 }
 
-// Start everything
-function initGame() {
-    loadGame(); // Try loading first
-    if (!game) newGame(); // Fallback to new game
-    gameLoop();
-}
-
-// Call init when page loads
-window.addEventListener('load', initGame);
+// Start the game
+gameLoop();
