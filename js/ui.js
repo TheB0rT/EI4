@@ -1,11 +1,10 @@
-// Update all UI elements
 function updateUI() {
   document.getElementById("gold").textContent = game.gold.toFixed(1);
   document.getElementById("gps").textContent = game.goldPerSecond.toFixed(1);
   document.getElementById("provinces").textContent = game.provinces;
 }
 
-// Button interactions
+// Initialize buttons
 document.getElementById("tax").addEventListener("click", () => {
   game.gold += 1;
   updateUI();
@@ -20,5 +19,5 @@ document.getElementById("conquer").addEventListener("click", () => {
   }
 });
 
-// Initialize UI
-updateUI();
+// Confirm UI loaded
+console.log("UI initialized");
