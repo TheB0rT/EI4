@@ -34,21 +34,26 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.manpower-popup {
-  position: absolute;
-  right: 0;
-  top: -15px; /* Slightly higher */
-  color: #4CAF50;
-  font-weight: bold;
-  font-size: 0.8em;
-  animation: floatUp 1s ease-out forwards;
-  z-index: 10; /* Ensure it appears above other elements */
-  text-shadow: 0 0 2px white; /* Better readability */
-}
-
 .manpower-container {
   position: relative;
   display: inline-block;
-  min-width: 50px;
-  padding-right: 15px; /* Space for +1 popup */
+}
+
+.manpower-popups {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  pointer-events: none;
+}
+
+.manpower-popup {
+  position: relative;
+  color: #4CAF50;
+  font-weight: bold;
+  animation: floatUp 1s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-20px); opacity: 0; }
 }
