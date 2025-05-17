@@ -2,24 +2,26 @@ let lastManpower = game.manpower;
 
 function updateUI() {
   // Update all displays
-  document.getElementById("gold").textContent = game.gold.toFixed(1);
-  document.getElementById("gps").textContent = game.goldPerSecond.toFixed(1);
+  document.getElementById("gold").textContent = Math.floor(game.gold);
+  document.getElementById("manpower").textContent = Math.floor(game.manpower);
   document.getElementById("provinces").textContent = game.provinces;
   
+   // Update tooltips
+  document.getElementById("gold-box").title = `Gold per second: ${game.goldPerSecond.toFixed(1)}`;
+  document.getElementById("manpower-box").title = `Manpower per second: ${game.manpowerPerSecond.toFixed(1)}`;
+ 
   // Manpower display with popup logic
   const currentManpower = Math.floor(game.manpower);
   document.getElementById("manpower").textContent = currentManpower;
 
-  // +1 Popup Effect
+  // Popup effect
+  const currentManpower = Math.floor(game.manpower);
   if (currentManpower > Math.floor(lastManpower)) {
     const popup = document.createElement("div");
     popup.textContent = `+${currentManpower - Math.floor(lastManpower)}`;
     popup.className = "manpower-popup";
-    
-    // Clear previous popups and add new one
-    const popupContainer = document.querySelector(".manpower-popups");
-    popupContainer.innerHTML = '';
-    popupContainer.appendChild(popup);
+    document.querySelector(".manpower-popups").innerHTML = '';
+    document.querySelector(".manpower-popups").appendChild(popup);
   }
   lastManpower = game.manpower;
 }
