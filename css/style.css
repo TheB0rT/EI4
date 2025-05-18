@@ -133,3 +133,14 @@ button:disabled {
   cursor: not-allowed;
   transform: none !important;
 }
+
+.sound-wave {
+    display: inline-block;
+    margin-left: 5px;
+    animation: soundWave 1s infinite;
+}
+
+@keyframes soundWave {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}

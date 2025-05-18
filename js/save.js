@@ -1,4 +1,4 @@
-// save.js - Save System
+// save.js - Updated reset handler
 function initializeSaveSystem() {
     if (!window.gameAPI?.state) {
         setTimeout(initializeSaveSystem, 100);
@@ -41,31 +41,20 @@ function initializeSaveSystem() {
         localStorage.setItem("europaIncrementalis", JSON.stringify(saveData));
     }
 
-    // Set up auto-save
     setInterval(saveGame, 30000);
 
-    // Reset functionality
     document.getElementById("reset").addEventListener("click", () => {
         if (confirm("Reset all progress?")) {
             localStorage.removeItem("europaIncrementalis");
-            Object.assign(game, {
-                gold: 10,
-                goldPerSecond: 0.5,
-                manpower: 1000,
-                manpowerPerSecond: 0.5,
-                provinces: 1,
-                lastUpdate: Date.now()
-            });
+            window.gameAPI.resetGame();
             if (typeof game.updateUI === 'function') {
                 game.updateUI();
             }
         }
     });
 
-    // Initial load
     loadGame();
     console.log("Save system initialized");
 }
 
-// Start initialization
 initializeSaveSystem();
