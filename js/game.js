@@ -1,4 +1,4 @@
-// game.js - Version with Sound Implementation
+// game.js - Updated with better sound error handling
 window.gameAPI = (function() {
     const state = {
         gold: 10,
@@ -9,18 +9,32 @@ window.gameAPI = (function() {
         lastUpdate: Date.now(),
         updateUI: null,
         sounds: {
-            conquer: new Audio('sounds/conquer.mp3'),
-            tax: new Audio('sounds/tax.mp3'),
-            reset: new Audio('sounds/reset.mp3')
-        }
+            conquer: null,
+            tax: null,
+            reset: null
+        },
+        soundEnabled: true
     };
 
-    // Initialize sounds
     function initSounds() {
-        Object.values(state.sounds).forEach(sound => {
-            sound.load();
-            sound.volume = 0.5;
-        });
+        try {
+            // Initialize audio objects only when needed
+            state.sounds.conquer = createAudio('sounds/conquer.mp3');
+            state.sounds.tax = createAudio('sounds/tax.mp3');
+            state.sounds.reset = createAudio('sounds/reset.mp3');
+        } catch (e) {
+            console.warn("Sound initialization failed:", e);
+            state.soundEnabled = false;
+        }
+    }
+
+    function createAudio(src) {
+        const audio = new Audio();
+        audio.src = src;
+        audio.volume = 0.5;
+        audio.preload = 'auto';
+        audio.load();
+        return audio;
     }
 
     function gameLoop() {
@@ -39,9 +53,18 @@ window.gameAPI = (function() {
     }
 
     function playSound(soundName) {
-        if (state.sounds[soundName]) {
-            state.sounds[soundName].currentTime = 0;
-            state.sounds[soundName].play().catch(e => console.log("Audio play failed:", e));
+        if (!state.soundEnabled || !state.sounds[soundName]) return;
+        
+        try {
+            const sound = state.sounds[soundName];
+            sound.currentTime = 0;
+            sound.play().catch(e => {
+                console.warn(`Failed to play ${soundName}:`, e);
+                state.soundEnabled = false;
+            });
+        } catch (e) {
+            console.warn(`Sound error with ${soundName}:`, e);
+            state.soundEnabled = false;
         }
     }
 
@@ -63,7 +86,7 @@ window.gameAPI = (function() {
                 state.provinces++;
                 state.goldPerSecond += 0.5;
                 state.manpowerPerSecond += 0.5;
-                this.playSound('conquer');
+                playSound('conquer');
                 return true;
             }
             return false;
@@ -71,7 +94,7 @@ window.gameAPI = (function() {
         collectTax: function() {
             const goldGain = state.provinces;
             state.gold += goldGain;
-            this.playSound('tax');
+            playSound('tax');
             return goldGain;
         },
         resetGame: function() {
@@ -83,7 +106,7 @@ window.gameAPI = (function() {
                 provinces: 1,
                 lastUpdate: Date.now()
             });
-            this.playSound('reset');
+            playSound('reset');
         }
     };
 })();
